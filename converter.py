@@ -1,8 +1,9 @@
 import sys
 
 def main():
-    get_arguments()
-    
+    amount , fr , to = get_arguments()
+    print(amount , fr , to)
+  
 def get_arguments():
     if len(sys.argv) < 4:
         sys.exit("Usage: python converter.py <amount> <from> <to>") 
@@ -17,10 +18,12 @@ def get_arguments():
 
     if x <0:
         sys.exit("Amount must be positive.")
-    else:
-        return
-        
+    return x , sys.argv[2].upper() , sys.argv[3].upper()
+
+
+         
     
-        
-main()
+if __name__=="__main__":
+    main()      
+    
 
