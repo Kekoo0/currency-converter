@@ -3,6 +3,14 @@ import sys
 def main():
     amount , fr , to = get_arguments()
     print(amount , fr , to)
+    rate=52.851
+    print(convert(amount, rate))
+    
+
+
+    
+    
+    
   
 def get_arguments():
     if len(sys.argv) < 4:
@@ -19,6 +27,13 @@ def get_arguments():
     if x <0:
         sys.exit("Amount must be positive.")
     return x , sys.argv[2].upper() , sys.argv[3].upper()
+
+def convert(amount , rate):
+    return amount*rate
+
+
+
+
 
 
          
