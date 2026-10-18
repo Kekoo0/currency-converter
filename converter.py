@@ -1,14 +1,13 @@
 import sys
+import requests
+
 
 def main():
     amount , fr , to = get_arguments()
-    print(amount , fr , to)
-    rate=52.851
-    print(convert(amount, rate))
+    rate=get_rate(fr,to)
+    print(f"{amount} {fr} = {convert(amount,rate):.2f} {to}")
     
 
-
-    
     
     
   
@@ -32,9 +31,28 @@ def convert(amount , rate):
     return amount*rate
 
 
+def get_rate(fr,to):
+    try:
+        response=requests.get(f"https://api.frankfurter.dev/v2/rate/{fr}/{to}",timeout=3)
+    except requests.exceptions.RequestException:
+        sys.exit("Could not connect to the exchange rate service. Check your internet connection and try again.")
+    
+    if response.status_code == 422 :
+        sys.exit(f"Invalid currency: {to} or {fr} . Please enter a valid currency code.")
+    elif response.status_code != 200:
+        sys.exit("Could not connect to the exchange rate service")
+        
+        
+    data=response.json()
+    
+    return data["rate"]
+
+        
+    
+    
 
 
-
+    
 
          
     
