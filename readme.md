@@ -1,49 +1,73 @@
 # Currency Converter CLI
 
-A command-line tool that converts an amount from one currency to another using live exchange rates from the [Frankfurter API](https://frankfurter.dev/).
+A simple command-line tool that converts an amount from one currency to another using live exchange rates from the [Frankfurter API](https://frankfurter.dev/). No API key required.
 
-> Status: in development (v1)
+## Features
+
+- Live exchange rates
+- Input validation (amount must be a valid, non-negative number)
+- Clear error messages for invalid currencies, network problems and service errors
+- Request timeout so the tool never hangs
+- Unit tests with pytest
+
+## Requirements
+
+- Python 3.9+
+- Packages listed in `requirements.txt`
+
+## Installation
+
+```
+git clone https://github.com/Kekoo0/currency-converter.git
+cd currency-converter
+pip install -r requirements.txt
+```
 
 ## Usage
 
 ```
-python converter.py <amount> <from_currency> <to_currency>
+python converter.py <amount> <from> <to>
 ```
+
+Currency codes are case-insensitive.
 
 Example:
 
 ```
-python converter.py 100 USD EGP
+python converter.py 100 usd egp
 ```
 
-Output:
+Output (the rate changes over time):
 
 ```
-100 USD = 5285.10 EGP
+100.0 USD = 5336.70 EGP
 ```
-
-## How it works
-
-- Input is read from the command line (`sys.argv`).
-- The tool fetches the current exchange rate from the Frankfurter API (no API key required).
-- The conversion is calculated locally: `amount * rate`.
 
 ## Error handling
 
 | Case | Message |
 |---|---|
-| Missing arguments | `Usage: python converter.py <amount> <from> <to>` |
+| Wrong number of arguments | `Usage: python converter.py <amount> <from> <to>` |
 | Amount is not a number | `Amount must be a number.` |
 | Amount is negative | `Amount must be positive.` |
-| Invalid currency code | `Invalid currency: <code>. Please enter a valid currency code.` |
-| No internet or API unreachable | `Could not connect to the exchange rate service. Check your internet connection and try again.` |
+| Unknown currency code | `Invalid currency: <to> or <from>. Please enter a valid currency code.` |
+| No internet connection or request timeout | `Could not connect to the exchange rate service. Check your internet connection and try again.` |
+| Other API error | `Could not connect to the exchange rate service` |
+
+## Running the tests
+
+```
+python -m pytest
+```
+
+Currently the tests cover the `convert` function. More tests are planned.
 
 ## Roadmap
 
-- v1: single conversion with error handling
-- v2: automated tests
-- v3: save conversion history / cache rates
+- [x] v1: single conversion with validation and error handling
+- [ ] More tests for argument validation and rate fetching
+- [ ] v2: save conversion history to a CSV file
 
 ## Data source
 
-Exchange rates provided by [Frankfurter](https://frankfurter.dev/).
+Exchange rates are provided by [Frankfurter](https://frankfurter.dev/).
